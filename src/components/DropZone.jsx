@@ -11,6 +11,8 @@ const DropZone = ({ status, onDrop, children }) => {
     }),
   });
 
+
+  
   return (
     <div ref={dropRef} className={`drop-zone ${isOver ? 'hovered' : ''}`}>
       {children}
