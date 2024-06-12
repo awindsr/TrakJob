@@ -4,7 +4,7 @@ import { useNavigate  } from "react-router-dom";
 import supabase from "../utils/Supabase"; // Assuming you have a supabase client
 
 
-export default function Header({setIsAuthenticated}) {
+export default function Header({setIsModalOpen}) {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -13,6 +13,8 @@ export default function Header({setIsAuthenticated}) {
         throw new Error(error.message);
       } else {
         // setIsAuthenticated(false);
+        sessionStorage.removeItem("user_id");
+      
         navigate("/login");
       }
     } catch (error) {
@@ -23,14 +25,13 @@ export default function Header({setIsAuthenticated}) {
     <div className="w-screen h-[8vh] px-4 py-2 flex justify-between bg-slate-900 ">
       <h1 className="text-primary font-gilroy font-black text-4xl">t.</h1>
       <div className="flex gap-2">
-        <button className="text-white bg-red-500 px-3 py-1 font-gilroy font-semibold" onClick={handleLogout}>
+        <button className="text-white border border-primary bg-primary text-sm px-2 rounded-lg font-gilroy font-semibold" onClick={() => setIsModalOpen(true)}>
+          Add Job
+        </button>
+        <button className="text-red-500 border border-red-500 text-sm px-2 rounded-lg font-gilroy font-semibold" onClick={handleLogout}>
           Logout
         </button>
-        <img
-          src="./images/avatar.png"
-          alt="avatar"
-          className="w-8 h-8 rounded-full"
-        />
+        
       </div>
     </div>
   );

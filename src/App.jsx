@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import { useEffect, useState } from "react";
 import supabase from "./utils/Supabase";
+import AddJobModal from "./components/AddJobModal";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,6 +56,7 @@ function App() {
             )
           }
         />
+        <Route path="/add" element={<AddJobModal />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>

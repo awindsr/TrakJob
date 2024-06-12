@@ -13,11 +13,7 @@ const DraggableCard = ({ job, children }) => {
       style={{
         
         cursor: "move",
-        border: "1px solid #ccc",
-        padding: "10px",
-        borderRadius: "5px",
-        margin: "5px",
-        backgroundColor: "lightblue",
+      
       }}
       className="draggable-card">
       {children}
