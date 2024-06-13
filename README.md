@@ -31,7 +31,7 @@ The Job Application Tracker is a web application built using ReactJS, Vite, Tail
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/job-application-tracker.git
+   git clone https://github.com/awindsr/trakjob.git
    ```
 
 2. Navigate to the project directory:
@@ -67,11 +67,3 @@ VITE_SUPABASE_URL=your-supabase-url
 
 Contributions are welcome! Feel free to open issues or pull requests for any improvements or bug fixes.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgements
-
-- Thanks to Supabase for providing an excellent backend service.
-- Built with ❤️ by [Your Name](link-to-your-github-profile).
