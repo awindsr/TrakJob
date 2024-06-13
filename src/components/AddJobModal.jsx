@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../utils/Supabase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 export default function AddJobModal({ setIsModalOpen, getData, token }) {
@@ -34,6 +34,7 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
             interview_date: formData.interview_date,
             applied_date: formData.applied_date,
             user_id: formData.user_id,
+            jd_link: formData.jd_link
           },
         ])
         .select();
@@ -94,11 +95,16 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
   }
 
   return (
-    <div className="w-screen h-screen  flex justify-center items-center font-gilroy transition duration-200 ease-in-out  backdrop-filter backdrop-blur-sm ">
+    <div className="w-screen h-screen  flex justify-center items-center font-gilroy transition duration-200 ease-in-out bg-[rgba(0,0,0,0.8)] backdrop-filter backdrop-blur-sm ">
       <div className="w-1/3 h-auto bg-white rounded-lg p-4 border border-gray-600 ">
-        <div className="flex flex-col mb-2">
+     
+        <div className="flex justify-between w-full">
+
+        <div className="flex flex-col mb-2 w-full">
           <h1 className="text-2xl font-bold text-left">Add Job</h1>
           <p className="text-sm text-gray-500">Please fill the details</p>
+        </div>
+        <FontAwesomeIcon icon={faClose} className="text-red-500 font-bold text-right  text-2xl mr-2" onClick={() => setIsModalOpen(false)} />
         </div>
         <form
           className="flex flex-col gap-4"
@@ -125,12 +131,13 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
               }
             />
           </div>
+              <div className="flex w-full justify-between gap-3">
 
           <input
             type="text"
             value={formData.company}
             placeholder="Company"
-            className="p-2 border border-gray-300 rounded-lg"
+            className="p-2 border border-gray-300 rounded-lg w-full"
             onChange={(e) =>
               setFormData({ ...formData, company: e.target.value })
             }
@@ -139,14 +146,25 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
             type="text"
             value={formData.platform}
             placeholder="Applied Platform"
-            className="p-2 border border-gray-300 rounded-lg"
+            className="p-2 border border-gray-300 rounded-lg w-full"
             onChange={(e) =>
               setFormData({ ...formData, platform: e.target.value })
             }
           />
-          <label htmlFor="status">Current Status</label>
+              </div>
+          <label className="block text-gray-700 text-sm font-bold" htmlFor="jd_link">JD Link</label>
+          <input
+              type="url"
+              name="jd_url"
+              value={formData.jd_link}
+              onChange={(e) =>
+                setFormData({ ...formData, jd_link: e.target.value })
+              }
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          <label htmlFor="status" className="text-gray-700 text-sm font-bold">Current Status</label>
           <select
-            className="p-2 border border-gray-300 rounded-lg"
+            className="p-2 border  border-gray-300 rounded-lg"
             value={formData.status}
             onChange={(e) =>
               setFormData({ ...formData, status: e.target.value })
@@ -157,7 +175,7 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
             <option value="Rejected">Rejected</option>
           </select>
           <div className="flex w-full flex-wrap gap-3">
-            <label htmlFor="applied_date">Applied Date</label>
+            <label htmlFor="applied_date" className="text-gray-700 text-sm font-bold">Applied Date</label>
             <input
               type="date"
               value={formData.applied_date}
@@ -167,7 +185,7 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
                 setFormData({ ...formData, applied_date: e.target.value })
               }
             />
-            <label htmlFor="interview_date">Interview Date</label>
+            <label htmlFor="interview_date" className="text-gray-700 text-sm font-bold">Interview Date</label>
             <input
               type="date"
               value={formData.interview_date}
@@ -179,13 +197,7 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
             />
           </div>
           <div className="flex gap-3 w-full justify-center">
-            <button
-              className="bg-red-500 text-white p-2 rounded-lg"
-              onClick={() => {
-                setIsModalOpen((prev) => !prev);
-              }}>
-              Close
-            </button>
+           
             <button
               className="bg-primary text-white p-2 rounded-lg"
               onClick={handleAddJob}>
