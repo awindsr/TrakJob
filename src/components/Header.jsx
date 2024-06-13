@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigate  } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import supabase from "../utils/Supabase"; // Assuming you have a supabase client
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Header({setIsModalOpen, setToken}) {
@@ -25,7 +27,7 @@ export default function Header({setIsModalOpen, setToken}) {
   }
   return (
     <div className="w-screen h-[8vh] px-4 py-2 flex justify-between bg-slate-900 ">
-      <h1 className="text-primary font-gilroy font-black text-4xl">t.</h1>
+      <h1 className="text-white font-gilroy font-black text-2xl flex gap-2 items-center "><FontAwesomeIcon icon={faBriefcase} className="text-white"/>{" "} TrakJob</h1>
       <div className="flex gap-2">
         <button className="text-white border border-primary bg-primary text-sm px-2 rounded-lg font-gilroy font-semibold" onClick={() => setIsModalOpen(true)}>
           Add Job

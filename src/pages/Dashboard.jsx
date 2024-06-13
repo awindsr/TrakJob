@@ -19,8 +19,8 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
   console.log(user_id);
 
   const getData = async () => {
-    if(!user_id) {
-      return navigate('/login')
+    if (!user_id) {
+      return navigate("/login");
     }
     try {
       const { data, error } = await supabase
@@ -45,15 +45,14 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
     const currentDate = new Date();
     const lastWeekDate = new Date();
     lastWeekDate.setDate(currentDate.getDate() - 7);
-
-
-    
-  }
+  };
 
   const handleDrop = async (item, newStatus) => {
-      console.log(item, newStatus)
+    console.log(item, newStatus);
     const updatedJobData = jobData.map((job) =>
-      job.application_id === item.id ? { ...job, current_status: newStatus } : job
+      job.application_id === item.id
+        ? { ...job, current_status: newStatus }
+        : job
     );
     setJobData(updatedJobData);
 
@@ -66,8 +65,6 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
       console.error("Error updating status:", error);
     }
   };
-
- 
 
   const appliedJobs = jobData.filter((job) => job.current_status === "Applied");
   const inTouchJobs = jobData.filter(
@@ -96,13 +93,21 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="relative w-[100vw] h-auto bg-white flex flex-col justify-start items-start">
-      {isModalOpen && (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <AddJobModal getData={getData} setIsModalOpen={setIsModalOpen} token={token} />
-    </div>
-  )}
+        {isModalOpen && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <AddJobModal
+              getData={getData}
+              setIsModalOpen={setIsModalOpen}
+              token={token}
+            />
+          </div>
+        )}
         <div className="w-screen h-[8vh]">
-          <Header setIsAuthenticated={setIsAuthenticated} setIsModalOpen={setIsModalOpen} setToken={setToken} />
+          <Header
+            setIsAuthenticated={setIsAuthenticated}
+            setIsModalOpen={setIsModalOpen}
+            setToken={setToken}
+          />
         </div>
         <div className="p-8 flex flex-col gap-5 items-center w-full h-auto justify-center">
           <StatCard
@@ -111,107 +116,109 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
             interviewed={interviewed}
             rejected={rejected}
           />
-          <div className="bg-[#f3f6ff] w-full flex gap-2 h-auto mt-4 p-4 rounded-md">
-            <DropZone status="Applied" onDrop={handleDrop}>
-              <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
-                Applied
-                <div className="bg-gray-300 p-2 rounded-md">
-                {appliedJobs.map((job) => (
-                  <DraggableCard key={job.application_id} job={job}>
-                    <ProgressCard
-                      job_title={job.job_title}
-                      application_id={job.application_id}
-                      company={job.company}
-                      date_applied={job.applied_date}
-                      applied_platform={job.applied_platform}
-                      interview_date={job.interview_date}
-                      current_status={job.current_status}
-                      getData={getData}
-                      tagBg="bg-[#eeecf9]"
-                      tagTextColor="text-[#8d75f6]"
-                    />
-                  </DraggableCard>
-                ))}
+          {jobData.length === 0 ? (
+            <div className="w-full flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-gilroy font-bold text-gray-600">
+                No Jobs Found
+              </h1>
+              Click on the "Add Job" button to add a new job
+            </div>
+          ) : (
+            <div className="bg-[#f3f6ff] w-full flex gap-2 h-auto mt-4 p-4 rounded-md">
+              <DropZone status="Applied" onDrop={handleDrop}>
+                <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
+                  Applied
+                  <div className="bg-gray-300 p-2 rounded-md">
+                    {appliedJobs.map((job) => (
+                      <DraggableCard key={job.application_id} job={job}>
+                        <ProgressCard
+                          job_title={job.job_title}
+                          application_id={job.application_id}
+                          company={job.company}
+                          date_applied={job.applied_date}
+                          applied_platform={job.applied_platform}
+                          interview_date={job.interview_date}
+                          current_status={job.current_status}
+                          getData={getData}
+                          tagBg="bg-[#eeecf9]"
+                          tagTextColor="text-[#8d75f6]"
+                        />
+                      </DraggableCard>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </DropZone>
-            <DropZone status="In Touch" onDrop={handleDrop}>
-              <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
-                In Touch
-                <div className="bg-gray-300 p-2 rounded-md">
-                {inTouchJobs.map((job) => (
-                  <DraggableCard key={job.application_id} job={job}>
-                    <ProgressCard
-                      job_title={job.job_title}
-                      application_id={job.application_id}
-
-                      company={job.company}
-                      getData={getData}
-
-                      date_applied={job.applied_date}
-                      applied_platform={job.applied_platform}
-                      current_status={job.current_status}
-                      interview_date={job.interview_date}
-                      tagBg="bg-[#f9f0e5]"
-                      tagTextColor="text-[#fd9d2f]"
-                    />
-                  </DraggableCard>
-                ))}
+              </DropZone>
+              <DropZone status="In Touch" onDrop={handleDrop}>
+                <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
+                  In Touch
+                  <div className="bg-gray-300 p-2 rounded-md">
+                    {inTouchJobs.map((job) => (
+                      <DraggableCard key={job.application_id} job={job}>
+                        <ProgressCard
+                          job_title={job.job_title}
+                          application_id={job.application_id}
+                          company={job.company}
+                          getData={getData}
+                          date_applied={job.applied_date}
+                          applied_platform={job.applied_platform}
+                          current_status={job.current_status}
+                          interview_date={job.interview_date}
+                          tagBg="bg-[#f9f0e5]"
+                          tagTextColor="text-[#fd9d2f]"
+                        />
+                      </DraggableCard>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </DropZone>
-            <DropZone status="Interviewed" onDrop={handleDrop}>
-              <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
-                Interview
-                <div className="bg-gray-300 p-2 rounded-md">
-
-                {interviewedJobs.map((job) => (
-                  <DraggableCard key={job.application_id} job={job}>
-                    <ProgressCard
-                      job_title={job.job_title}
-                      application_id={job.application_id}
-
-                      company={job.company}
-                      date_applied={job.applied_date}
-                      getData={getData}
-
-                      applied_platform={job.applied_platform}
-                      current_status={job.current_status}
-                      interview_date={job.interview_date}
-                      tagBg="bg-green-100"
-                      tagTextColor="text-green-500"
-                    />
-                  </DraggableCard>
-                ))}
+              </DropZone>
+              <DropZone status="Interviewed" onDrop={handleDrop}>
+                <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
+                  Interview
+                  <div className="bg-gray-300 p-2 rounded-md">
+                    {interviewedJobs.map((job) => (
+                      <DraggableCard key={job.application_id} job={job}>
+                        <ProgressCard
+                          job_title={job.job_title}
+                          application_id={job.application_id}
+                          company={job.company}
+                          date_applied={job.applied_date}
+                          getData={getData}
+                          applied_platform={job.applied_platform}
+                          current_status={job.current_status}
+                          interview_date={job.interview_date}
+                          tagBg="bg-green-100"
+                          tagTextColor="text-green-500"
+                        />
+                      </DraggableCard>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </DropZone>
-            <DropZone status="Rejected" onDrop={handleDrop}>
-              <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
-                Rejected
-                <div className="bg-gray-300 p-2 rounded-md">
-                {rejectedJobs.map((job) => (
-                  <DraggableCard key={job.application_id} job={job}>
-                    <ProgressCard
-                      job_title={job.job_title}
-                      application_id={job.application_id}
-
-                      company={job.company}
-                      date_applied={job.applied_date}
-                      getData={getData}
-
-                      applied_platform={job.applied_platform}
-                      interview_date={job.interview_date}
-                      current_status={job.current_status}
-                      tagBg="bg-red-100"
-                      tagTextColor="text-red-500"
-                    />
-                  </DraggableCard>
-                ))}
+              </DropZone>
+              <DropZone status="Rejected" onDrop={handleDrop}>
+                <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
+                  Rejected
+                  <div className="bg-gray-300 p-2 rounded-md">
+                    {rejectedJobs.map((job) => (
+                      <DraggableCard key={job.application_id} job={job}>
+                        <ProgressCard
+                          job_title={job.job_title}
+                          application_id={job.application_id}
+                          company={job.company}
+                          date_applied={job.applied_date}
+                          getData={getData}
+                          applied_platform={job.applied_platform}
+                          interview_date={job.interview_date}
+                          current_status={job.current_status}
+                          tagBg="bg-red-100"
+                          tagTextColor="text-red-500"
+                        />
+                      </DraggableCard>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </DropZone>
-          </div>
+              </DropZone>
+            </div>
+          )}
         </div>
       </div>
     </DndProvider>
@@ -219,8 +226,6 @@ export default function Dashboard({ setIsAuthenticated, token, setToken }) {
 }
 
 function ProgressCard({
-
-   
   job_title,
   company,
   date_applied,
@@ -230,54 +235,47 @@ function ProgressCard({
   tagTextColor,
   interview_date,
   application_id,
-  getData
-}) 
+  getData,
+}) {
+  const handleDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from("job_applications")
+        .delete()
+        .eq("application_id", application_id);
 
+      if (error) {
+        console.error(error);
+        throw new Error(error.message);
+      } else {
+        console.log("Deleted");
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  // const appliedDate =
+  // console.log(appliedDate)
 
-
-
-{
-    const handleDelete = async () => {
-        try {
-            const { error } = await supabase
-                .from('job_applications')
-                .delete()
-                .eq('application_id', application_id);
-    
-            if (error) {
-                console.error(error);
-                throw new Error(error.message);
-            } else {
-                console.log('Deleted');
-                getData();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    // const appliedDate = 
-    // console.log(appliedDate)
-    
   return (
     <div className="w-full h-auto p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 mt-4">
       <div className="bg-white rounded-lg flex flex-col gap-4 w-full h-auto p-4 shadow-sm">
         <div className="flex justify-between items-center w-full">
           <div
             className={`${tagBg} ${tagTextColor} flex justify-between items-center px-3 font-bold w-auto py-1 rounded-full`}>
-            {current_status}{" "} <br></br>
-            {
-              current_status === "Interviewed" && interview_date && (
-                <div className="text-md">
-                {" "} {interview_date.split("T")[0]}
-                </div>
-              )
-            }
-           
+            {current_status} <br></br>
+            {current_status === "Interviewed" && interview_date && (
+              <div className="text-md"> {interview_date.split("T")[0]}</div>
+            )}
           </div>
           <div>
-            <FontAwesomeIcon icon={faTrash} className="text-red-500" onClick={handleDelete}/>
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="text-red-500"
+              onClick={handleDelete}
+            />
           </div>
         </div>
         <div className="flex flex-col mt-4">
