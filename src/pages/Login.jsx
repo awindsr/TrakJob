@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import supabase from "../utils/Supabase"; // Assuming you have a supabase client
 import { useNavigate } from "react-router-dom";
 
-export default function Login({ setIsAuthenticated }) {
+export default function Login({ setIsAuthenticated, setToken }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -57,12 +57,13 @@ export default function Login({ setIsAuthenticated }) {
         // console.log(user.user.id)
         const { data, error } = await supabase.auth.getUserIdentities();
         // console.log(data.identities[0].user_id)
-        sessionStorage.setItem("user_id", data.identities[0].user_id);
+        const user_id = sessionStorage.setItem("user_id", data.identities[0].user_id);
+        setToken(user_id);
 
        try {
         const { data:userData, error:userDataError } = await supabase
         .from("users")
-        .insert([{ email: formData.email, user_id: data.identities[0].user_id}])
+        .insert([{ email: formData.email, user_id: user_id}])
         .select();
 
         if (userDataError) {
@@ -75,7 +76,7 @@ export default function Login({ setIsAuthenticated }) {
         console.log(error.message)
        }
         // console.log("User signed in:", user);
-        setIsAuthenticated(true);
+        // setIsAuthenticated(true);
         navigate("/dashboard");
       }
     } catch (error) {

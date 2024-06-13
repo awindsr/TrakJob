@@ -9,14 +9,19 @@ import supabase from "../utils/Supabase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AddJobModal from "../components/AddJobModal";
+import { useNavigate } from "react-router-dom";
 
-export default function Dashboard({ setIsAuthenticated }) {
+export default function Dashboard({ setIsAuthenticated, token }) {
+  const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user_id = sessionStorage.getItem("user_id");
+  const user_id = token;
   console.log(user_id);
 
   const getData = async () => {
+    if(!user_id) {
+      return navigate('/login')
+    }
     try {
       const { data, error } = await supabase
         .from("job_applications")
@@ -31,6 +36,10 @@ export default function Dashboard({ setIsAuthenticated }) {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const calculateApplicationsFiledChange = () => {
     const currentDate = new Date();
@@ -58,9 +67,7 @@ export default function Dashboard({ setIsAuthenticated }) {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+ 
 
   const appliedJobs = jobData.filter((job) => job.current_status === "Applied");
   const inTouchJobs = jobData.filter(
@@ -91,7 +98,7 @@ export default function Dashboard({ setIsAuthenticated }) {
       <div className="relative w-[100vw] h-auto bg-white flex flex-col justify-start items-start">
       {isModalOpen && (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <AddJobModal getData={getData} setIsModalOpen={setIsModalOpen} />
+      <AddJobModal getData={getData} setIsModalOpen={setIsModalOpen} token={token} />
     </div>
   )}
         <div className="w-screen h-[8vh]">
@@ -108,6 +115,7 @@ export default function Dashboard({ setIsAuthenticated }) {
             <DropZone status="Applied" onDrop={handleDrop}>
               <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
                 Applied
+                <div className="bg-gray-300 p-2 rounded-md">
                 {appliedJobs.map((job) => (
                   <DraggableCard key={job.application_id} job={job}>
                     <ProgressCard
@@ -124,11 +132,13 @@ export default function Dashboard({ setIsAuthenticated }) {
                     />
                   </DraggableCard>
                 ))}
+                </div>
               </div>
             </DropZone>
             <DropZone status="In Touch" onDrop={handleDrop}>
               <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
                 In Touch
+                <div className="bg-gray-300 p-2 rounded-md">
                 {inTouchJobs.map((job) => (
                   <DraggableCard key={job.application_id} job={job}>
                     <ProgressCard
@@ -147,11 +157,14 @@ export default function Dashboard({ setIsAuthenticated }) {
                     />
                   </DraggableCard>
                 ))}
+                </div>
               </div>
             </DropZone>
             <DropZone status="Interviewed" onDrop={handleDrop}>
               <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
                 Interview
+                <div className="bg-gray-300 p-2 rounded-md">
+
                 {interviewedJobs.map((job) => (
                   <DraggableCard key={job.application_id} job={job}>
                     <ProgressCard
@@ -170,11 +183,13 @@ export default function Dashboard({ setIsAuthenticated }) {
                     />
                   </DraggableCard>
                 ))}
+                </div>
               </div>
             </DropZone>
             <DropZone status="Rejected" onDrop={handleDrop}>
               <div className="w-full h-auto flex flex-col p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 bg-gray-200">
                 Rejected
+                <div className="bg-gray-300 p-2 rounded-md">
                 {rejectedJobs.map((job) => (
                   <DraggableCard key={job.application_id} job={job}>
                     <ProgressCard
@@ -193,6 +208,7 @@ export default function Dashboard({ setIsAuthenticated }) {
                     />
                   </DraggableCard>
                 ))}
+                </div>
               </div>
             </DropZone>
           </div>
@@ -250,8 +266,15 @@ function ProgressCard({
         <div className="flex justify-between items-center w-full">
           <div
             className={`${tagBg} ${tagTextColor} flex justify-between items-center px-3 font-bold w-auto py-1 rounded-full`}>
-            {current_status} <br />
-            {interview_date?.split("T")[0]}
+            {current_status}{" "} <br></br>
+            {
+              current_status === "Interviewed" && interview_date && (
+                <div className="text-md">
+                {" "} {interview_date.split("T")[0]}
+                </div>
+              )
+            }
+           
           </div>
           <div>
             <FontAwesomeIcon icon={faTrash} className="text-red-500" onClick={handleDelete}/>

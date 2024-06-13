@@ -13,6 +13,8 @@ import AddJobModal from "./components/AddJobModal";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // Add loading state
+  const [token, setToken] = useState(null);
+
 
   useEffect(() => {
     // Check user authentication status when component mounts
@@ -21,11 +23,16 @@ function App() {
 
   const checkUser = async () => {
     try {
-      const { data, error } = await supabase.auth.getSession();
+      const {
+        data: { user },error
+      } = await supabase.auth.getUser();
+
       if (error) {
         throw new Error(error.message);
-      } else {
-        setIsAuthenticated(true);
+      } else if(user) {
+        setToken(user.id);
+        console.log(token);
+        console.log(user.id)
       }
     } catch (error) {
       console.log("Error getting session:", error);
@@ -43,21 +50,31 @@ function App() {
       <Routes>
         <Route
           path="/login"
-          element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          element={token? (
+            <Navigate
+                to="/dashboard"
+               
+                token={token}
+              />
+          ): <Login  setToken={setToken} />}
         />
         {/* Redirect based on authentication status */}
         <Route
           path="/"
           element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" setIsAuthenticated={setIsAuthenticated} />
+            token ? (
+              <Navigate
+                to="/dashboard"
+               
+                token={token}
+              />
             ) : (
               <Navigate to="/login" />
             )
           }
         />
-        <Route path="/add" element={<AddJobModal />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add" element={<AddJobModal token={token} />} />
+        <Route path="/dashboard" element={<Dashboard token={token}/>} />
       </Routes>
     </Router>
   );

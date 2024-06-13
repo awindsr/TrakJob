@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import supabase from "../utils/Supabase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-export default function AddJobModal({ setIsModalOpen, getData }) {
+export default function AddJobModal({ setIsModalOpen, getData, token }) {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     title: "",
     url: "",
@@ -12,9 +14,9 @@ export default function AddJobModal({ setIsModalOpen, getData }) {
     status: "",
     interview_date: "",
     applied_date: "",
-    user_id: sessionStorage.getItem("user_id"),
+    user_id: token,
   });
-  
+
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -87,6 +89,10 @@ export default function AddJobModal({ setIsModalOpen, getData }) {
     );
   }
 
+  if(!token){
+    return navigate("/login")
+  }
+
   return (
     <div className="w-screen h-screen  flex justify-center items-center font-gilroy transition duration-200 ease-in-out  backdrop-filter backdrop-blur-sm ">
       <div className="w-1/3 h-auto bg-white rounded-lg p-4 border border-gray-600 ">
@@ -150,7 +156,7 @@ export default function AddJobModal({ setIsModalOpen, getData }) {
             <option value="Interview">Interview Scheduled</option>
             <option value="Rejected">Rejected</option>
           </select>
-          <div className="flex w-full gap-3">
+          <div className="flex w-full flex-wrap gap-3">
             <label htmlFor="applied_date">Applied Date</label>
             <input
               type="date"
