@@ -57,7 +57,9 @@ export default function Login({ setIsAuthenticated, setToken }) {
         // console.log(user.user.id)
         const { data, error } = await supabase.auth.getUserIdentities();
         // console.log(data.identities[0].user_id)
-        const user_id = sessionStorage.setItem("user_id", data.identities[0].user_id);
+        sessionStorage.setItem("user_id", data.identities[0].user_id);
+        const user_id = sessionStorage.getItem("user_id")
+        console.log( data.identities[0].user_id)
         setToken(user_id);
 
        try {

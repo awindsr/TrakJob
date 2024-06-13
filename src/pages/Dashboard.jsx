@@ -11,7 +11,7 @@ import { faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AddJobModal from "../components/AddJobModal";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard({ setIsAuthenticated, token }) {
+export default function Dashboard({ setIsAuthenticated, token, setToken }) {
   const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -102,7 +102,7 @@ export default function Dashboard({ setIsAuthenticated, token }) {
     </div>
   )}
         <div className="w-screen h-[8vh]">
-          <Header setIsAuthenticated={setIsAuthenticated} setIsModalOpen={setIsModalOpen} />
+          <Header setIsAuthenticated={setIsAuthenticated} setIsModalOpen={setIsModalOpen} setToken={setToken} />
         </div>
         <div className="p-8 flex flex-col gap-5 items-center w-full h-auto justify-center">
           <StatCard

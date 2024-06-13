@@ -67,6 +67,7 @@ function App() {
                 to="/dashboard"
                
                 token={token}
+                setToken={setToken}
               />
             ) : (
               <Navigate to="/login" />
@@ -74,7 +75,7 @@ function App() {
           }
         />
         <Route path="/add" element={<AddJobModal token={token} />} />
-        <Route path="/dashboard" element={<Dashboard token={token}/>} />
+        <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken}/>} />
       </Routes>
     </Router>
   );

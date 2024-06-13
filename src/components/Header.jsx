@@ -4,7 +4,7 @@ import { useNavigate  } from "react-router-dom";
 import supabase from "../utils/Supabase"; // Assuming you have a supabase client
 
 
-export default function Header({setIsModalOpen}) {
+export default function Header({setIsModalOpen, setToken}) {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -13,6 +13,8 @@ export default function Header({setIsModalOpen}) {
         throw new Error(error.message);
       } else {
         // setIsAuthenticated(false);
+
+        setToken(null)
         sessionStorage.removeItem("user_id");
       
         navigate("/login");
