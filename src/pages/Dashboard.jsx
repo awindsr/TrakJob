@@ -278,8 +278,8 @@ function ProgressCard({
   };
 
   return (
-    <div className="w-full h-auto p-4 bg-white shadow-md rounded-lg font-gilroy text-gray-500 mt-4">
-      <div className="bg-white rounded-lg flex flex-col gap-4 w-full h-auto p-4 shadow-sm">
+    <div className="w-full h-auto p-2 bg-white shadow-md rounded-lg font-gilroy text-gray-500 mt-4">
+      <div className="bg-white rounded-lg flex flex-col gap-4 w-full h-auto p-2 shadow-sm">
         <div className="flex justify-between items-center w-full">
           <div
             className={`${tagBg} ${tagTextColor} flex justify-between items-center px-3 font-bold w-auto py-1 rounded-full`}
@@ -289,13 +289,13 @@ function ProgressCard({
           <div className="flex items-center gap-2">
             <FontAwesomeIcon
               icon={faEdit}
-              className="text-gray-700"
+              className="text-gray-700  cursor-pointer"
               onClick={() => openEditModal({ jd_link, job_title, company, date_applied, applied_platform, current_status, interview_date, application_id })}
             />
 
             <FontAwesomeIcon
               icon={faTrash}
-              className="text-red-500"
+              className="text-red-500  cursor-pointer"
               onClick={handleDelete}
             />
           </div>
@@ -309,19 +309,19 @@ function ProgressCard({
           </div>
           <p className="text-slate-700 text-sm">{company}</p>
         </div>
-        <div className="flex gap-1 mt-4 w-full">
-          {(current_status === "Applied" || current_status === "In Touch") && (
-            <p className="text-green-500 bg-green-100 px-3 py-1 w-1/2 rounded-full text-sm flex items-center justify-center">
+        <div className="flex flex-wrap gap-1 mt-4 w-full">
+          {(current_status === "Applied" || current_status === "In Touch" || current_status === "Rejected") && (
+            <p className="text-green-500 bg-green-100 px-3 py-1 w-full rounded-full text-[.8rem] flex items-center justify-center">
               Applied: {date_applied.split("T")[0]}
             </p>
           )}
 
           {current_status === "Interviewed" && interview_date && (
-            <p className="text-green-500 bg-green-100 px-3 py-1 w-1/2 rounded-full text-sm flex items-center justify-center">
+            <p className="text-green-500 bg-green-100 px-3 py-1 w-full rounded-full text-[.8rem] flex items-center justify-center">
               Interview: {interview_date.split("T")[0]}
             </p>
           )}
-          <p className="text-yellow-500 bg-yellow-100 px-3 py-1 w-1/2 rounded-full text-sm flex items-center justify-center">
+          <p className="text-yellow-500 bg-yellow-100 px-3 py-1 w-full rounded-full text-[.8rem] flex items-center justify-center">
             {applied_platform}
           </p>
         </div>
@@ -380,7 +380,7 @@ function EditCardModal({ setIsEditModalOpen, job, getData }) {
             icon={faClose}
             className="text-red-500 cursor-pointer"
             onClick={() => setIsEditModalOpen(false)}
-            text-right
+            
           />
         </div>
         <form onSubmit={handleSubmit} >
