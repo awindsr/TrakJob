@@ -184,7 +184,7 @@ export default function Login({ setIsAuthenticated, setToken }) {
       </div>
       <div className="w-1/3 h-full">
         <img
-          src="./images/login-bg-1x.png"
+          src="./images/login-bg-1x.webp"
           alt="background image"
           className="w-full h-full object-fill object-center"
         />
