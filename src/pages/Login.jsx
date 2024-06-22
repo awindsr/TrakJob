@@ -15,7 +15,7 @@ export default function Login({ setIsAuthenticated, setToken }) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    console.log(formData);
+    
   }, [formData]);
 
   const [isSignup, setIsSignup] = useState(false);
@@ -72,7 +72,7 @@ export default function Login({ setIsAuthenticated, setToken }) {
           throw new Error(userDataError.message);
         }
         else{
-          console.log("User added successfully")
+          
         }
        } catch (error) {
         console.log(error.message)

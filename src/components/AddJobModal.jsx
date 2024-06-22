@@ -73,7 +73,7 @@ export default function AddJobModal({ setIsModalOpen, getData, token }) {
   }, [successMessage]);
 
   useEffect(() => {
-    console.log(formData);
+    
   }, [formData]);
 
   if (successMessage) {
