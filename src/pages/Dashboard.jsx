@@ -269,7 +269,7 @@ function ProgressCard({
         console.error(error);
         throw new Error(error.message);
       } else {
-        console.log("Deleted");
+        
         getData();
       }
     } catch (error) {
@@ -341,7 +341,7 @@ function EditCardModal({ setIsEditModalOpen, job, getData }) {
     jd_link:  job?.jd_link
   });
 
-  console.log(formData.jd_link)
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -362,7 +362,7 @@ function EditCardModal({ setIsEditModalOpen, job, getData }) {
         console.error(error);
         throw new Error(error.message);
       } else {
-        console.log("Updated");
+        
         getData();
         setIsEditModalOpen(false);
       }

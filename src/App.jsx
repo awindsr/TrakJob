@@ -33,8 +33,8 @@ function App() {
         throw new Error(error.message);
       } else if(user) {
         setToken(user.id);
-        console.log(token);
-        console.log(user.id)
+        
+        
       }
     } catch (error) {
       console.log("Error getting session:", error);
