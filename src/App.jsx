@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import { useEffect, useState } from "react";
 import supabase from "./utils/Supabase";
 import AddJobModal from "./components/AddJobModal";
+import Loader from "./components/Loader";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,12 +39,12 @@ function App() {
     } catch (error) {
       console.log("Error getting session:", error);
     } finally {
-      setLoading(false); // Set loading to false when session check is done
+      setLoading(false); 
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Render loading indicator
+    return <div className="w-screen h-screen flex items-center justify-center"><Loader/></div>; 
   }
 
   return (

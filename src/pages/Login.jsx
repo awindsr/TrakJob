@@ -156,6 +156,12 @@ export default function Login({ setIsAuthenticated, setToken }) {
                 }
               />
             )}
+            <p className="text-sm text-gray-500">
+              {!isSignup
+                ? (<a href="#" className="text-primary">Forgot Password?</a>)
+                : ""}
+            </p>
+
             <button
               className="bg-primary text-white p-2 rounded-lg"
               type="submit">
